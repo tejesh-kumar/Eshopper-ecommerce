@@ -12,7 +12,7 @@ import banner from '../../images/home/shipping.jpg';
 import ProductDetail from '../ProductDetail';
 // import ProductCard from '../../utils/ProductCard';
 
-function Showcase({products, categories, brands, product, productHandler}) {
+function Showcase({products, categories, brands, tabCategory, quantity, searchString, incrementQtyHandler, decrementQtyHandler, updateCart, selectedProductToPurchaseHandler, tabCategoryHandler}) {
 // function Showcase({products}) {
 
 	let dynamicShowcase;
@@ -22,15 +22,15 @@ function Showcase({products, categories, brands, product, productHandler}) {
 			<Route
 				path={[ '/', '/home' ]}
 				render={() => (
-					<Grid item container xs={12} md={9} alignItems="flex-start">
+					<Grid item container xs={12} md={9} alignItems="flex-start" spacing={6}>
 						<Grid item container>
-							<FeaturedItems products={products} />
+							<FeaturedItems products={products} updateCart={updateCart} />
 						</Grid>
-						{/* <Grid item container>
-					<TabItems />
-				</Grid>
-				<Grid item container>
-					<RecommendedItems />
+						<Grid item container>
+							<TabItems categories={categories} products={products} tabCategory={tabCategory} updateCart={updateCart} tabCategoryHandler={tabCategoryHandler} />
+						</Grid>
+				{/* <Grid item container>
+					<RecommendedItems products={products} updateCart={updateCart} />
 				</Grid> */}
 					</Grid>
 				)}
@@ -43,7 +43,7 @@ function Showcase({products, categories, brands, product, productHandler}) {
 				render={() => (
 					<Grid item container xs={12} md={9} alignItems="flex-start">
 						<Grid item container justify="flex-start" alignItems="flex-start">
-							<FeaturedItems products={products} />
+							<FeaturedItems products={products} updateCart={updateCart} />
 						</Grid>
 					</Grid>
 				)}
@@ -51,11 +51,11 @@ function Showcase({products, categories, brands, product, productHandler}) {
 
 
 			<Route
-				path={['/shop/category/:categoryId', '/shop/brand/:brandId']}
+				path={['/shop/category/:categoryId', '/shop/brand/:brandId', '/shop/search/:searchStr']}
 				render={() => (
 					<Grid item container xs={12} md={9} alignItems="flex-start">
 						<Grid item container>
-							<FeaturedItems products={products} />
+							<FeaturedItems products={products} updateCart={updateCart} />
 						</Grid>
 					</Grid>
 				)}
@@ -68,7 +68,7 @@ function Showcase({products, categories, brands, product, productHandler}) {
 				render={() => (
 					<Grid item container xs={12} md={9}>
 						<Grid item container alignItems="flex-start">
-							<ProductDetail products={products} />
+							<ProductDetail products={products} quantity={quantity} incrementQtyHandler={incrementQtyHandler} decrementQtyHandler={decrementQtyHandler} updateCart={updateCart} selectedProductToPurchaseHandler={selectedProductToPurchaseHandler} />
 						</Grid>
 						{/* <Grid item container>
 							<RecommendedItems />
@@ -111,7 +111,9 @@ function Showcase({products, categories, brands, product, productHandler}) {
 					<Grid item xs={12}>
 						<LeftSidebarSection title="category" linkItems={categories} />
 						<LeftSidebarSection title="brand" linkItems={brands} />
-						<img src={banner} alt="banner" />
+						<Grid item>
+							<img src={banner} alt="banner" style={{maxWidth: '100%'}} />
+						</Grid>
 					</Grid>
 				</Grid>
 

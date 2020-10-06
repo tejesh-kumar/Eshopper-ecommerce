@@ -24,11 +24,15 @@ const useStyles = makeStyles(theme => ({
 
 
 
-function WhiteButton() {
+function WhiteButton({productId, updateCart}) {
     const classes = useStyles()
 
     return (
-        <Button className={classes.buttonStyle} variant="contained" startIcon={<ShoppingCartIcon />}>Add to cart</Button>
+        <Button className={classes.buttonStyle} variant="contained" startIcon={<ShoppingCartIcon />} onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            updateCart(productId)
+        }}>Add to cart</Button>
     )
 }
 

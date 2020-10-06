@@ -30,7 +30,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	quantity: {
 		display: 'flex',
-        alignItems: 'center',
+		alignItems: 'center',
+		marginBottom: '20px'
 	},
 	secondaryDetails: {
 		fontSize: '14px',
@@ -47,15 +48,28 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function ProductDetail({ products }) {
+function ProductDetail({ products, cart, quantity, incrementQtyHandler, decrementQtyHandler, updateCart, selectedProductToPurchaseHandler }) {
 	const classes = useStyles();
 
 	const { productId } = useParams();
 	console.log('productId', productId);
 
+	if(products.length === 0) {
+		return null;
+	}
+
 	const currentlyViewingProduct = products.find((product) => parseInt(product.id) === parseInt(productId));
 	const { id, brand, category, imgUrl, price, title, availability } = currentlyViewingProduct;
 	console.log('currently', currentlyViewingProduct);
+
+	// let quantity = 1;
+	// cart.forEach(product => {
+	// 	if(product.id === id) {
+	// 		quantity = product.qty;
+	// 	}
+	// })
+	console.log(quantity);
+
 
 	return (
 		<Grid className={classes.root} container spacing={5} justify="center" alignItems="center">
@@ -77,35 +91,19 @@ function ProductDetail({ products }) {
 				</Grid>
 
 				<Grid item container>
-					{/* <Grid item container justify="center" alignItems="center" spacing={10}>
-						<Grid item>
-							<IconButton aria-label="">
-								<AddIcon />
-							</IconButton>
-						</Grid>
-						<Grid item>
-							<Typography variant="h5">2</Typography>
-						</Grid>
-						<Grid item>
-							<IconButton aria-label="">
-								<RemoveIcon />
-							</IconButton>
-						</Grid>
-					</Grid> */}
-
 					<div className={classes.quantity}>
-                <IconButton aria-label=""><AddIcon /></IconButton>
-				<Box mx={5}><Typography variant="h5">2</Typography></Box>
-                <IconButton aria-label=""><RemoveIcon /></IconButton>
+                <IconButton aria-label="" onClick={incrementQtyHandler}><AddIcon /></IconButton>
+					<Box mx={5}><Typography variant="h5">{quantity}</Typography></Box>
+                <IconButton aria-label="" onClick={decrementQtyHandler}><RemoveIcon /></IconButton>
               </div>
 			  </Grid>
 
 			  <Grid item container spacing={3}>
 					<Grid item>
-						<WhiteButton  />
+						<WhiteButton updateCart={updateCart} productId={id} />
 					</Grid>
 					<Grid item>
-						<OrangeButton />
+						<OrangeButton selectedProductToPurchaseHandler={selectedProductToPurchaseHandler} productId={id} quantity={quantity} />
 					</Grid>
 				</Grid>
 

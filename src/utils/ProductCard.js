@@ -8,7 +8,7 @@ import WhiteButton from './WhiteButton';
 const useStyles = makeStyles((theme) => ({
 	root: {
 		border: '1px solid #f7f7f5',
-		// marginBottom: '30px'
+		padding: '10px'
 	},
 	priceStyle: {
 		color: theme.palette.text.orange,
@@ -18,10 +18,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 	titleStyle: {
 		marginBottom: '10px',
-		fontSize: '14px'
+		fontSize: '14px',
+		textAlign: 'center'
 	},
 	imageStyle: {
-        height: '200px',
+        height: '100px',
 
         '& img': {
             height: 'inherit',
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function ProductCard({productInfo }) {
+function ProductCard({productInfo, updateCart }) {
 	const classes = useStyles();
 
 	return (
@@ -50,7 +51,7 @@ function ProductCard({productInfo }) {
 			</Grid>
 			<Grid item>
 				<Box mb="25px">
-					<WhiteButton />
+					<WhiteButton updateCart={updateCart} productId={productInfo.id} />
 				</Box>
 			</Grid>
         </Grid>

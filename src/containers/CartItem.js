@@ -2,17 +2,19 @@ import React from 'react'
 import {Grid, Typography, IconButton, Box} from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import RemoveIcon from '@material-ui/icons/Remove'
+import DeleteIcon from '@material-ui/icons/Delete';
 import {makeStyles} from '@material-ui/styles'
 
-import image from '../images/cart/one.png'
+// import image from '../images/cart/one.png'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        padding: '20px 10px',
+        padding: '20px',
         border: `1px solid ${theme.palette.secondary.main}`
     },
     img: {
         height: '100px',
+        marginRight: '20px',
         
         '& img': {
             height: 'inherit',
@@ -26,14 +28,22 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
     },
+    deleteBtn: {
+        '&:hover': {
+            color: '#ff0000'
+        }
+    },
     total: {
         fontSize: '24px',
         color: theme.palette.text.orange
     }
 }))
 
-function CartItem() {
+function CartItem({cartProduct}) {
     const classes = useStyles()
+    const { name, image, price, size } = cartProduct;
+    const productTotal = parseInt(price) * parseInt(size);
+
 
     return (
         <Grid className={classes.root} item container justify="space-between" alignItems="center">
@@ -42,22 +52,26 @@ function CartItem() {
                   <img src={image} alt="product-img"/>
               </div>
               <div className={classes.title}>
-                  <Typography variant="h6" color="initial">Polo Black Shirt</Typography>
+    <Typography variant="h6" color="initial">{name}</Typography>
               </div>
             </Grid>
           
               <div className={classes.price}>
-                  Rs.<span>485</span>
+    Rs.<span>{price}</span>
               </div>
               <div className={classes.quantity}>
                 <IconButton aria-label=""><AddIcon /></IconButton>
-				<Box mx={2}><Typography variant="h5">2</Typography></Box>
+    <Box mx={2}><Typography variant="h5">{size}</Typography></Box>
                 <IconButton aria-label=""><RemoveIcon /></IconButton>
+              </div>
+
+              <div>
+              <IconButton aria-label=""><DeleteIcon className={classes.deleteBtn} /></IconButton>
               </div>
 
           <div>
             <Typography variant="h4" className={classes.total}>
-                Rs.<span>485</span>
+    Rs.<span>{productTotal}</span>
             </Typography>
           </div>
         </Grid>

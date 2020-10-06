@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import {Switch, Route, useRouteMatch, useParams, useLocation, Link} from 'react-router-dom'
-import { Grid } from '@material-ui/core'
+import { Grid, Box } from '@material-ui/core'
 
 import Heading from './Heading'
 import ProductCard from './ProductCard'
@@ -8,7 +8,7 @@ import ProductCard from './ProductCard'
 import Image from '../images/home/product2.jpg'
 
 
-function FeaturedItems({products}) {
+function FeaturedItems({products, updateCart}) {
 
     console.log('products', products)
     const param = useParams();
@@ -34,6 +34,16 @@ function FeaturedItems({products}) {
         modifiedProducts = products.filter(product => product.brand.toLowerCase() === title.toLowerCase());
         console.log(modifiedProducts);
     }
+
+    if(location.pathname.includes('/search')) {
+        const searchString = param.searchStr;
+
+        title = `Search results for '${searchString}'`;       
+
+        modifiedProducts = products.filter(product => product.title.toLowerCase().includes(searchString.toLowerCase()) === true);
+        console.log(modifiedProducts);
+    }
+
     // <Switch>
     //     <Route path='/shop'  />
     // </Switch>
@@ -41,15 +51,20 @@ function FeaturedItems({products}) {
     return (
         <Fragment>
         <Heading title={title} />
-        <Grid item container spacing={4}>
+        <Grid item container spacing={2}>
                 { 
                     products.length > 0 ?
                     (   
-                        modifiedProducts.map(item => (
-                            <Grid item md={4} key={item.id}>
-                                <Link to={`/product/${item.title}/${item.id}`} style={{ color: 'inherit', textDecoration: 'inherit'}}><ProductCard img={Image} productInfo={item} /></Link>
-                            </Grid>
-                        ))
+                        modifiedProducts.length > 0 ? 
+                        (
+                            modifiedProducts.map(item => (
+                                <Grid item md={4} xs={6} key={item.id}>
+                                    <Link to={`/product/${item.title}/${item.id}`} style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                                        <ProductCard img={Image} productInfo={item} updateCart={updateCart} />
+                                    </Link>
+                                </Grid>
+                            ))
+                        ) : <Grid item container justify="center" alignItems="center"><Box mt={5}><h3>No Products Found</h3></Box></Grid>
                     ) : null
                 }
         </Grid>

@@ -6,13 +6,13 @@ import HeaderMiddle from '../../Header/HeaderMiddle'
 import HeaderBottom from '../../Header/HeaderBottom'
 
 
-function Header() {
+function Header({logout, searchHandler}) {
     return (
         <Grid container>
             <HeaderTop />
-            <HeaderMiddle />
+            <HeaderMiddle logout={logout} />
             <Divider />
-            <HeaderBottom />
+            <HeaderBottom searchHandler={searchHandler} />
         </Grid>
     )
 }

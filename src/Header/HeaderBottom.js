@@ -1,5 +1,5 @@
-import React from 'react';
-import {NavLink} from 'react-router-dom'
+import React, {useState} from 'react';
+import {Link, NavLink} from 'react-router-dom'
 
 import { Container, InputBase } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -49,15 +49,24 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '12px',
         color: theme.palette.text.primary,
         backgroundColor: theme.palette.secondary.main,
-        padding: '4px',
+        padding: '8px 16px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
-    }
+	},
+	searchLink: {
+		color: 'inherit',
+		textDecoration: 'none'
+	}
 }));
 
-function HeaderBottom() {
+function HeaderBottom({searchHandler}) {
 	const classes = useStyles();
+	const [searchStr, setSearchStr] = useState('');
+
+	const searchChangeHandler = (search) => {
+		setSearchStr(search.toLowerCase());
+	}
 
 	return (
 		<Container maxWidth="lg" className={classes.root}>
@@ -66,12 +75,9 @@ function HeaderBottom() {
                 <NavLink to='/shop' activeClassName={classes.active} className={classes.menuItem}>Shop</NavLink>
                 <NavLink to='/product' activeClassName={classes.active} className={classes.menuItem}>About</NavLink>
                 <NavLink to='/contact' activeClassName={classes.active} className={classes.menuItem}>Contact</NavLink>
-
             </div>
 			<div className={classes.search}>
-				<div className={classes.searchIcon}>
-					<SearchIcon />
-				</div>
+				
 				<InputBase
 					placeholder="Search…"
 					classes={{
@@ -79,7 +85,15 @@ function HeaderBottom() {
 						input: classes.inputInput
 					}}
 					inputProps={{ 'aria-label': 'search' }}
+					value={searchStr}
+					onChange={(e) => searchChangeHandler(e.target.value)}
 				/>
+
+				<Link to={`/shop/search/${searchStr}`} className={classes.searchLink} >
+					<div className={classes.searchIcon} onClick={() => searchHandler(searchStr)}>
+						<SearchIcon />
+					</div>
+				</Link>
 			</div>
 		</Container>
 	);

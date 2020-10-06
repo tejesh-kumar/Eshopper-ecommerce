@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react'
-import { Container } from '@material-ui/core'
+import {Link} from 'react-router-dom'
+import { Container, Grid } from '@material-ui/core'
 import Slider from 'react-slick'
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
@@ -10,7 +11,11 @@ import ProductCard from './ProductCard'
 import Image from '../images/home/recommend3.jpg'
 
 
-function RecommendedItems() {
+function RecommendedItems({products, updateCart}) {
+    const modifiedProducts = products.reverse()
+    // .splice(5);
+    console.log('modifiedProducts', modifiedProducts);
+
     const settings = {
         dots: false,
         infinite: true,
@@ -38,7 +43,7 @@ function RecommendedItems() {
                     dots: false
                 }
             }
-        ]
+        ],
         // nextArrow: <SampleNextArrow />,
         // prevArrow: <SamplePrevArrow />
       };
@@ -56,12 +61,28 @@ function RecommendedItems() {
 
         <div>
             <Slider {...settings}>
+                {/* <div><ProductCard img={Image} /></div>
                 <div><ProductCard img={Image} /></div>
                 <div><ProductCard img={Image} /></div>
                 <div><ProductCard img={Image} /></div>
                 <div><ProductCard img={Image} /></div>
-                <div><ProductCard img={Image} /></div>
-                <div><ProductCard img={Image} /></div>
+                <div><ProductCard img={Image} /></div> */}
+
+                { 
+                    modifiedProducts.length > 0 ?
+                    (   
+                        products.map(item => (
+                            // <Grid item md={4} sm={12} key={item.id}>
+                            <div key={item.id}>
+                                <Link to={`/product/${item.title}/${item.id}`} style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                                    <ProductCard productInfo={item} updateCart={updateCart} />
+                                </Link>
+                            </div>
+                            // </Grid>
+                        ))
+                    ) : null
+                }
+
             </Slider>
         </div>
         </Container>
