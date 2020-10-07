@@ -1,16 +1,16 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, Fragment} from 'react'
 import {Link} from 'react-router-dom'
-import {Grid, Container, Button, Box} from '@material-ui/core'
+import {Grid, Container, Button, Box, Typography} from '@material-ui/core'
 
 import CartItem from './CartItem'
 import authHeader from '../services/auth-header'
 
-function Cart() {
+function Cart({cart, updateCart}) {
     const [cartProducts, setCartProducts] = useState([])
-    const [total, setTotal] = useState(0)
+    const [totalamt, setTotalamt] = useState(0)
+    const [taxamt, setTaxamt] = useState(0)
     const [grandTotal, setGrandTotal] = useState(0)
-
-    // const TOKEN = JSON.parse(localStorage.getItem('loginDetail')).token;
+    let subTotal=0, tax, total;
 
     useEffect(() => {
         const getCartProducts = async () => {
@@ -27,30 +27,47 @@ function Cart() {
                 .then(res => res.json())
                 // .then(data => console.log(data))
                 .then(data => setCartProducts(data))
+                // .then(data => calcTotal())
                 .catch(err => console.log(err));
         }
 
         getCartProducts();
 
+        // const calcTotal = () => {
+        //     // total = 0, subTotal = 0, tax = 0;
+        //     cartProducts.forEach((prod) => {
+        //         subTotal = subTotal + (prod.size * prod.price)
+        //     console.log(prod.size, prod.price);
+        //     })
+        //     tax = 5 / 100 * subTotal;
+        //     total = subTotal + tax;
+        //     console.log(subTotal);
+        // }
+        // calcTotal();
 
 
-        const sendToken = async () => {
-            await fetch('https://testecmr.herokuapp.com/users/userprofile/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // 'Authorization': '858f0d32c05f88b6375b0d8dbd36b2e10f51873'
-                    'Authorization': authHeader()
-                },
-                // body: JSON.stringify({Token: '858f0d32c05f88b6375b0d8dbd36b2e10f518738'})
+    }, [cart]) 
+
+    useEffect(() => {
+        const calcTotal = () => {
+            // total = 0, subTotal = 0, tax = 0;
+            cartProducts.forEach((prod) => {
+                subTotal = subTotal + (prod.size * prod.price)
+            console.log(prod.size, prod.price);
             })
-                .then(res => res.json())
-                .then(data => console.log(data))
-                .catch(err => console.log(err));
+            tax = 5 / 100 * subTotal;
+            total = subTotal + tax;
+            // console.log(subTotal, tax, total);
+            setTotalamt(subTotal);
+            setTaxamt(tax);
+            setGrandTotal(total);
+
         }
 
-        // sendToken();
-    }, []) 
+        calcTotal();
+    }, [cartProducts])
+
+
     
 
     return (
@@ -58,9 +75,34 @@ function Cart() {
             <Grid container>
                 {
                     cartProducts.length > 0 ?
-                        cartProducts.map(product => <CartItem key={product.id} cartProduct={product} />)
+                        cartProducts.map(product => <CartItem key={product.id} cartProduct={product} updateCart={updateCart} />)
                          : <h3>Your Shopping Cart is Empty</h3>
                 }
+            </Grid>
+
+            {
+            cartProducts.length > 0 ?
+            <Fragment>
+            <Grid container direction="column" spacing={2} style={{marginTop: '10px'}}>
+                <Grid item container spacing={6} justify="flex-end" alignItems="center">
+                    <Grid item>SubTotal</Grid>
+            <Grid item>Rs. <span>{totalamt}</span></Grid>
+                </Grid>
+
+                <Grid item container spacing={6} justify="flex-end" alignItems="center">
+                    <Grid item>Tax 5%</Grid>
+            <Grid item>Rs. <span>{taxamt}</span></Grid>
+                </Grid>
+
+                <Grid item container spacing={6} justify="flex-end" alignItems="center">
+                    <Grid item>Shipping</Grid>
+                    <Grid item>Free</Grid>
+                </Grid>
+
+                <Grid item container spacing={4} justify="flex-end" alignItems="center">
+                    <Grid item><Typography variant="h5" color="primary">Total</Typography></Grid>
+            <Grid item><Typography variant="h5" color="primary">Rs.<span>{grandTotal}</span></Typography></Grid>
+                </Grid>
             </Grid>
             
             <Grid container justify="flex-end">
@@ -68,6 +110,8 @@ function Cart() {
                     <Link to={{ pathname: '/checkout/cart' }} style={{textDecoration: 'none'}}><Button variant="contained" color="primary">Proceed to checkout</Button></Link>
                 </Box>
             </Grid>
+            </Fragment> : null
+        }
         </Container>
     )
 }

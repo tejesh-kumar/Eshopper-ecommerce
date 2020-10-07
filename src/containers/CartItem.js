@@ -39,9 +39,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-function CartItem({cartProduct}) {
+function CartItem({cartProduct, updateCart}) {
     const classes = useStyles()
-    const { name, image, price, size } = cartProduct;
+    const { product_id_id, name, image, price, size } = cartProduct;
     const productTotal = parseInt(price) * parseInt(size);
 
 
@@ -60,13 +60,14 @@ function CartItem({cartProduct}) {
     Rs.<span>{price}</span>
               </div>
               <div className={classes.quantity}>
-                <IconButton aria-label=""><AddIcon /></IconButton>
+                <IconButton aria-label="" onClick={() => updateCart(product_id_id, 'add', 1)}><AddIcon /></IconButton>
+
     <Box mx={2}><Typography variant="h5">{size}</Typography></Box>
-                <IconButton aria-label=""><RemoveIcon /></IconButton>
+                <IconButton aria-label="" onClick={() => updateCart(product_id_id, 'subtract', 1)}><RemoveIcon /></IconButton>
               </div>
 
               <div>
-              <IconButton aria-label=""><DeleteIcon className={classes.deleteBtn} /></IconButton>
+              <IconButton aria-label="" onClick={() => updateCart(product_id_id, 'delete', 1)}><DeleteIcon className={classes.deleteBtn} /></IconButton>
               </div>
 
           <div>

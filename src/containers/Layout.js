@@ -100,20 +100,38 @@ function Layout() {
         }
     }
 
-    const updateCart = async (id) => {
+    const updateCart = async (id, actionType = 'add', qty = 1) => {
         // e.stopPropogation();
         console.log('id', id);
-        const tempCart = [...cart];
-        const matchingProd = tempCart.find(prod => id === prod.id);
+        // const tempCart = [...cart];
+        let tempCart = {};
+        console.log('cart', tempCart);
 
-        if(matchingProd) {
-            matchingProd.qty = matchingProd.qty + 1;
-            const matchIndex = tempCart.findIndex(prod => id === prod.id);
-            tempCart[matchIndex] = matchingProd;
-        }
-        else {
-            tempCart.push({id: id, qty: 1});
-        }
+        tempCart = {id: id, actionType: actionType, qty: qty}
+
+        // const matchingProd = tempCart.find(prod => id === prod.id);
+        // const matchIndex = tempCart.findIndex(prod => id === prod.id);
+
+        // if(actionType === 'delete') {
+            // tempCart.splice(matchIndex, 1);
+        // }
+        // else {
+        //     if(matchingProd) {
+        //         if(actionType === 'add') {
+        //             matchingProd.qty = matchingProd.qty + 1;
+        //         } 
+        //         else if(actionType === 'subtract') {
+        //             matchingProd.qty = matchingProd.qty - 1;
+        //         }
+    
+        //         tempCart[matchIndex] = matchingProd;
+        //     }
+        //     else {
+        //         tempCart.push({id: id, qty: 1});
+        //     }
+        // }
+
+        
 
         console.log('tempCart', tempCart);
         // Updating Cart on backend
@@ -125,7 +143,7 @@ function Layout() {
                     // 'Authorization': '858f0d32c05f88b6375b0d8dbd36b2e10f518738'
                     // 'Authorization': TOKEN
                 },
-                body: JSON.stringify(tempCart[0])
+                body: JSON.stringify(tempCart)
             })
                 .then(res => res.json())
                 .then(data => console.log(data))
@@ -210,11 +228,13 @@ function Layout() {
 				</Grid>
 
 				<Grid item container justify="center">
-					<main style={{width: '100%'}}>
+					<main style={{width: '100%', minHeight: '40vh'}}>
 						<Switch>
 							<ProtectedRoute path={'/login'} currentUser={currentUser} component={Login} />
 
-                            <Route path={'/cart'} component={Cart} />
+                            <Route path={'/cart'} render={() => (
+                                <Cart cart={cart} updateCart={(id, actionType) => updateCart(id, actionType)} />
+                            )} />
 
                             <Route path={'/checkout/:purchaseType'} render={() => (
                                 <Checkout cart={cart} selectedProductToPurchase={selectedProductToPurchase} />
