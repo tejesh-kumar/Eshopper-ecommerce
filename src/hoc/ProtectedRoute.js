@@ -1,17 +1,20 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, useHistory } from 'react-router-dom';
 
-const ProtectedRoute = ({ component: Component, currentUser, ...rest }) => {
+const ProtectedRoute = ({ component: Component, currentUser, loginUser, ...rest }) => {
+  const history = useHistory();
+
   return (
     <Route {...rest} render={
       props => {
           if (!currentUser) {
-            return <Component {...rest} {...props} /> 
+            return <Component loginUser={loginUser} {...rest} {...props} /> 
           }
           else {
               return <Redirect to={
                 {
-                  pathname: '/',
+                  pathname: history.goBack(),
+                  // pathname: '/',
                   state: {
                     from: props.location
                   }

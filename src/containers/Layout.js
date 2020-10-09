@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
 
 import Aux from '../hoc/Auxiliary';
@@ -24,14 +24,20 @@ function Layout() {
     const [selectedProductToPurchase, setSelectedProductToPurchase] = useState({});
     const [searchString, setSearchString] = useState('');
 
-    // const TOKEN = JSON.parse(localStorage.getItem('loginDetail')).token;
+    const history = useHistory();
 
 
 	useEffect(() => {
-        const user = AuthService.getCurrentUser();
-        if (user) {
-            setCurrentUser(user);
-        }
+        // const user = AuthService.getCurrentUser();
+        // if (user) {
+        //     setCurrentUser(user);
+        // }
+
+        // let sessionCart = {};
+        //     if(sessionStorage.getItem('cart') !== null) {
+        //         sessionCart = JSON.parse(sessionStorage.getItem('cart'));
+        //     }
+        // setCart(sessionCart.products);    
 
 		const fetchProducts = async () => {
             // await fetch('https://cfd7348e-6a50-40f0-8fb1-bbffec42d549.mock.pstmn.io/products')
@@ -56,8 +62,6 @@ function Layout() {
         fetchProducts();
 
         const fetchCategories = async () => {
-            // await fetch('https://cfd7348e-6a50-40f0-8fb1-bbffec42d549.mock.pstmn.io/categories')
-            // await fetch('https://api.mockaroo.com/api/a9db3030?count=50&key=e72bd0b0')
             await fetch('https://testecmr.herokuapp.com/category/')
                 .then((response) => response.json())
                 .then((data) => {
@@ -85,6 +89,23 @@ function Layout() {
 
     }, []);
 
+
+    useEffect(() => {
+        const user = AuthService.getCurrentUser();
+        if (user) {
+            setCurrentUser(user);
+        }
+
+        let sessionCart = {products: [], cartStatus: 'outOfSync'};
+            if(sessionStorage.getItem('cart') !== null) {
+                sessionCart = JSON.parse(sessionStorage.getItem('cart'));
+            }
+        setCart(sessionCart.products);
+
+    }, []);
+    
+
+
     const incrementQtyHandler = () => {
         let tempQty = updateQty
         tempQty = tempQty + 1;
@@ -101,37 +122,61 @@ function Layout() {
     }
 
     const updateCart = async (id, actionType = 'add', qty = 1) => {
+
+        if(currentUser === undefined) {  
+
+            // cart = [{"token": "858f0d32c05f88b6375b0d8dbd36b2e10f518738", "products": "[{3, 2}, {5, 1}]", "cartStatus": "outOfSync"}, {}] 
+            let sessionCart = {};
+            if(sessionStorage.getItem('cart') !== null) {
+                sessionCart = JSON.parse(sessionStorage.getItem('cart'));
+            }
+
+            // if(currentUser === undefined) {
+            //     const token = currentUser.token;
+            // }
+            const tempCart = [...cart];
+            const matchingProd = tempCart.find(prod => id === prod.id);
+            const matchIndex = tempCart.findIndex(prod => id === prod.id);
+
+            if(actionType === 'delete') {
+                tempCart.splice(matchIndex, 1);
+            }
+            else if(actionType === 'add') {
+
+                if(matchingProd !== undefined) {
+                    matchingProd.qty = matchingProd.qty + 1;
+                    tempCart[matchIndex] = matchingProd;
+                }
+                else {
+                    tempCart.push({id: id, qty: 1});
+                    console.log('tempCart', tempCart);
+                }
+            } 
+            else if(actionType === 'subtract') {
+                if(matchingProd.qty === 1) {
+                    tempCart.splice(matchIndex, 1);
+                }
+                else {
+                    matchingProd.qty = matchingProd.qty - 1;
+                    tempCart[matchIndex] = matchingProd;
+                }
+            }
+            sessionCart.products = tempCart;
+            sessionCart.cartStatus = 'outOfSync';
+            sessionStorage.setItem('cart', JSON.stringify(sessionCart));
+
+            setCart(tempCart);
+        }
+
+        else {
+
         // e.stopPropogation();
         console.log('id', id);
-        // const tempCart = [...cart];
+        
         let tempCart = {};
         console.log('cart', tempCart);
 
         tempCart = {id: id, actionType: actionType, qty: qty}
-
-        // const matchingProd = tempCart.find(prod => id === prod.id);
-        // const matchIndex = tempCart.findIndex(prod => id === prod.id);
-
-        // if(actionType === 'delete') {
-            // tempCart.splice(matchIndex, 1);
-        // }
-        // else {
-        //     if(matchingProd) {
-        //         if(actionType === 'add') {
-        //             matchingProd.qty = matchingProd.qty + 1;
-        //         } 
-        //         else if(actionType === 'subtract') {
-        //             matchingProd.qty = matchingProd.qty - 1;
-        //         }
-    
-        //         tempCart[matchIndex] = matchingProd;
-        //     }
-        //     else {
-        //         tempCart.push({id: id, qty: 1});
-        //     }
-        // }
-
-        
 
         console.log('tempCart', tempCart);
         // Updating Cart on backend
@@ -150,7 +195,8 @@ function Layout() {
                 // .then(data => setCartProducts(data))
                 .catch(err => console.log(err));
 
-        setCart(tempCart);
+            setCart(tempCart);
+        }
     }
 
 
@@ -207,42 +253,82 @@ function Layout() {
     
     console.log(cart);
 
+    const loginUser = async (loginDetails) => {
+		await AuthService.login(loginDetails).then(
+			() => {
+			    // history.replace(history.goBack());
+                history.go(-1);
+                const user = AuthService.getCurrentUser();
+                setCurrentUser(user);
+                equalizeCart();
+			})  
+	};
 
     const logout = () => {
         AuthService.logout();
+        history.go(0);
         setCurrentUser(undefined);
       };
 
-    // const findCurrentViewingProductHandler = (selectedProductId) => {
-    //     const matchedProduct = products.find(product => product.id === selectedProductId);
-    //     setCurrentlyViewingProduct(matchedProduct);
-    // }
+    const equalizeCart = () => {
+        let sessionCart = {products: [], cartStatus: 'outOfSync'};
+            if(sessionStorage.getItem('cart') !== null) {
+                sessionCart = JSON.parse(sessionStorage.getItem('cart'));
+            }
+
+            const getCartProducts = async () => {
+                await fetch('https://testecmr.herokuapp.com/cart/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': authHeader()
+                    },
+                    body: JSON.stringify(sessionCart.products)
+                })
+                    .then(res => res.json())
+                    // .then(data => console.log(data))
+                    .then(data => {
+                        const permanentCart = data.map(cp => ({id: cp.product_id_id, qty: cp.size}))
+                        console.log(permanentCart);
+                        const tempCart = {products: permanentCart, cartStatus: 'inSync'};
+                        sessionStorage.setItem('cart', JSON.stringify(tempCart));
+                        setCart(permanentCart);
+                    })
+                    .catch(err => console.log(err));
+            }
+    
+        getCartProducts();
+    }
 
 
 	return (
 		<Aux>
 			<Grid container direction="column">
 				<Grid item container>
-					<Header logout={logout} 
+					<Header logout={logout} currentUser={currentUser}
                         searchHandler={(searchStr) => searchHandler(searchStr)} />
 				</Grid>
 
 				<Grid item container justify="center">
 					<main style={{width: '100%', minHeight: '40vh'}}>
 						<Switch>
-							<ProtectedRoute path={'/login'} currentUser={currentUser} component={Login} />
+							<ProtectedRoute path={'/login'} currentUser={currentUser} loginUser={(loginDetails) => loginUser(loginDetails)} component={Login} />
 
                             <Route path={'/cart'} render={() => (
-                                <Cart cart={cart} updateCart={(id, actionType) => updateCart(id, actionType)} />
+                                <Cart products={products} currentUser={currentUser} cart={cart} updateCart={(id, actionType) => updateCart(id, actionType)} />
                             )} />
+
 
                             <Route path={'/checkout/:purchaseType'} render={() => (
-                                <Checkout cart={cart} selectedProductToPurchase={selectedProductToPurchase} />
+                                (currentUser === undefined) ?
+                                    <Redirect to='/login' /> :
+
+                                    <Route path='/checkout/:purchaseType'>
+                                        <Checkout cart={cart} selectedProductToPurchase={selectedProductToPurchase} />
+                                    </Route>
                             )} />
 
-                            {/* <Route path={'/checkout/buynow'} render={() => (
-                                <Checkout cart={selectedProductToPurchase} />
-                            )} /> */}
+
 
 							<Route path={['/', '/shop']} render={() => ( 
                         <Home 

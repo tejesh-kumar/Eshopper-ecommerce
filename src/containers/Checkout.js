@@ -10,6 +10,7 @@ function Checkout({selectedProductToPurchase}) {
     const [cartProducts, setCartProducts] = useState([])
     const [total, setTotal] = useState(0)
     const [grandTotal, setGrandTotal] = useState(0)
+    const [shippingDetails, setShippingDetails] = useState({})
 
     let { purchaseType } = useParams()
 
@@ -53,6 +54,30 @@ function Checkout({selectedProductToPurchase}) {
 
     }, [])
 
+    const sendShippingDetails = async () => {
+        const detail ={
+            "name": "madhu",
+            "address": "3,Vijayanagar,Bangalore70",
+            "phone": "909090646876",
+            "payment_method": "cod",
+            "products": [{"id": 1, "qty": 4}, {"id": 2, "qty": 5}]
+        }
+
+        await fetch('https://testecmr.herokuapp.com/order/addorder/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': '858f0d32c05f88b6375b0d8dbd36b2e10f518738'
+                // 'Authorization': TOKEN
+                'Authorization': authHeader()
+            },
+            body: JSON.stringify(detail)
+        })
+            .then(res => res.json('url'))
+            .then(data => console.log(data))
+            .catch(err => console.log(err))
+    }
+
     return (
         <Container>
             <Grid container justify="space-around" alignItems="flex-start">
@@ -65,7 +90,7 @@ function Checkout({selectedProductToPurchase}) {
                     }
                 </Grid>
                 <Grid item container sm={4}>
-                    <ShippingDetails />
+                    <ShippingDetails sendShippingDetails={sendShippingDetails} />
                 </Grid>
             </Grid>
 

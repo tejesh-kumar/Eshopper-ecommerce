@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import { Route, Link, useHistory } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import { Grid, TextField, Button, Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -21,9 +21,8 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function Login(props) {
+function Login({loginUser}) {
 	const classes = useStyles();
-	let history = useHistory();
 
 	const [ loginDetails, setLoginDetails ] = useState({ username: '', password: '' });
 	const [ registerDetails, setRegisterDetails ] = useState({ username: '', email: '', password: '' });
@@ -87,31 +86,17 @@ function Login(props) {
 		// 	.then((data) => console.log(data));
 	};
 
-	const loginUser = async () => {
-		await AuthService.login(loginDetails).then(
-			() => {
-			  history.replace("/");
-			  window.location.reload();
-			//   window.addEventListener("popstate", () => {
-			// 	history.go(1);
-			//   });
-			})  
-		// fetch('https://testecmr.herokuapp.com/users/login/', {
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'Content-Type': 'application/json'
-		// 	},
-		// 	body: JSON.stringify(loginDetails)
-		// })
-		// 	.then((response) => response.json())
-		// 	.then((data) => {
-		// 		const loginDetail = JSON.stringify(data);
-		// 		localStorage.setItem('loginDetail', loginDetail);
-				
-		// 	})
-		// 	.catch((err) => console.log(err));
-		// .then(data => console.log(data))
-	};
+	
+	// const loginUser = async () => {
+	// 	await AuthService.login(loginDetails).then(
+	// 		() => {
+	// 		  history.replace(history.goBack());
+	// 		//   history.go(0);
+	// 		  window.location.reload();			
+	// 		})  
+	// };
+
+
 
 	return (
 		<Grid item container justify="center">
@@ -137,7 +122,7 @@ function Login(props) {
 									value={loginDetails.password}
 									onChange={passwordChangeHandler}
 								/>
-								<Button variant="contained" color="primary" onClick={loginUser}>
+								<Button variant="contained" color="primary" onClick={() => loginUser(loginDetails)}>
 									<Box py={0.7}>
 										<Typography variant="body1" color="secondary">
 											LOGIN

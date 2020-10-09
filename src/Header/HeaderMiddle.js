@@ -4,12 +4,12 @@ import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import PersonIcon from '@material-ui/icons/Person';
-import StarIcon from '@material-ui/icons/Star';
-import MyLocationIcon from '@material-ui/icons/MyLocation';
+// import StarIcon from '@material-ui/icons/Star';
+// import MyLocationIcon from '@material-ui/icons/MyLocation';
 import LockIcon from '@material-ui/icons/Lock';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
-import AuthService from '../services/auth.service';
+// import AuthService from '../services/auth.service';
 import Logo from '../images/home/logo.png';
 
 const useStyles = makeStyles((theme) => ({
@@ -51,9 +51,10 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function HeaderMiddle({logout}) {
+function HeaderMiddle({currentUser, logout}) {
+	console.log('middle', currentUser)
 	const classes = useStyles();
-	const currentUser = AuthService.getCurrentUser();
+	// const currentUser = AuthService.getCurrentUser();
 
 	return (
 		<Container maxWidth="lg" className={classes.root}>

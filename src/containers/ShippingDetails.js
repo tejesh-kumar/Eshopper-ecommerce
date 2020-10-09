@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function ShippingDetails() {
+function ShippingDetails({sendShippingDetails}) {
 	const classes = useStyles();
 
 	return (
@@ -59,7 +59,7 @@ function ShippingDetails() {
 							// value={loginDetails.password}
 							// onChange={passwordChangeHandler}
 						/>
-						<Button variant="contained" color="primary">
+						<Button variant="contained" color="primary" onClick={() => sendShippingDetails()}>
 							<Box py={0.7}>
 								<Typography variant="body1" color="secondary">
 									Order Now

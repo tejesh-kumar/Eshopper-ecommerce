@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: '10px'
 	},
 	priceStyle: {
-		color: theme.palette.text.orange,
+		color: theme.palette.text.orange, 
 		fontWeight: 700,
 		fontSize: '24px',
 		margin: '20px 0px 10px 0'

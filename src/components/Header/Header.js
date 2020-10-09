@@ -6,11 +6,11 @@ import HeaderMiddle from '../../Header/HeaderMiddle'
 import HeaderBottom from '../../Header/HeaderBottom'
 
 
-function Header({logout, searchHandler}) {
+function Header({currentUser, logout, searchHandler}) {
     return (
         <Grid container>
             <HeaderTop />
-            <HeaderMiddle logout={logout} />
+            <HeaderMiddle logout={logout} currentUser={currentUser} />
             <Divider />
             <HeaderBottom searchHandler={searchHandler} />
         </Grid>
