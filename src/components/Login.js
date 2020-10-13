@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, useParams } from 'react-router-dom';
 import { Grid, TextField, Button, Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -23,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Login({loginUser}) {
 	const classes = useStyles();
+	const {prevPage} = useParams();
+	console.log(prevPage);
 
 	const [ loginDetails, setLoginDetails ] = useState({ username: '', password: '' });
 	const [ registerDetails, setRegisterDetails ] = useState({ username: '', email: '', password: '' });
@@ -122,7 +124,7 @@ function Login({loginUser}) {
 									value={loginDetails.password}
 									onChange={passwordChangeHandler}
 								/>
-								<Button variant="contained" color="primary" onClick={() => loginUser(loginDetails)}>
+								<Button variant="contained" color="primary" onClick={() => loginUser(loginDetails, prevPage)}>
 									<Box py={0.7}>
 										<Typography variant="body1" color="secondary">
 											LOGIN

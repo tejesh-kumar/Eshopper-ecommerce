@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, Fragment} from 'react';
 import { Container, Button, Typography, Grid, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -7,7 +7,9 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+import MainCarouselItem from './MainCarouselItem';
 import OrangeButton from '../../utils/OrangeButton';
+
 
 import heroImg1 from '../../images/home/girl1.jpg';
 import heroImg2 from '../../images/home/girl2.jpg';
@@ -46,8 +48,24 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function MainCarousel() {
+function MainCarousel({products, homeSlider, selectedProductToPurchaseHandler}) {
 	const classes = useStyles();
+	let modifiedProducts = []
+
+	if(!products || !homeSlider) { return 0 }
+
+	homeSlider.forEach(hp => {
+		products.forEach(p => {
+			if (hp.product_id === p.id) {
+				modifiedProducts.push(p);
+				console.log('p', modifiedProducts);
+			}
+		})
+	})
+
+	console.log('mod', modifiedProducts);
+
+	
 
 	function SampleNextArrow(props) {
 		const { style, onClick } = props;
@@ -79,6 +97,9 @@ function MainCarousel() {
 	};
 
 	return (
+
+		modifiedProducts.length > 0 ?
+
 		<Container
 			maxWidth="lg"
 			style={{
@@ -89,82 +110,114 @@ function MainCarousel() {
 		>
 			<div>
 				<Slider {...settings}>
+
+					{
+						// <Fragment>
+							// <MainCarouselItem />
+							// <MainCarouselItem />
+						// </Fragment>
+					}
+
 					<div>
 						<div>
 							<Grid container>
 								<Grid item md={1} />
 								<Grid item container xs={12} md={5} justify="center" alignItems="center">
 									<div>
-										<Typography className={classes.heroTextOrangeStyle} variant="h3">
-											E<span className={classes.heroTextGreyStyle}>-SHOPPER</span>
+										<Typography className={classes.heroTextOrangeStyle} variant="h4">
+										{modifiedProducts[0].title}<span className={classes.heroTextGreyStyle}>{}</span>
 										</Typography>
 										<Box my={2}>
 											<Typography variant="body1">
-												Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-												tempor incididunt ut labore et dolore magna aliqua.
+												{modifiedProducts[0].title}
 											</Typography>
 										</Box>
-										{/* <Button variant="contained" color="primary">BUY NOW</Button> */}
-										<OrangeButton />
+										<OrangeButton selectedProductToPurchaseHandler={selectedProductToPurchaseHandler} productId={modifiedProducts[0].id} quantity={1}  />
 									</div>
 								</Grid>
 								<Grid item xs={12} md={6}>
 									<div className={classes.heroImgStyle}>
-										<img src={heroImg1} alt="" />
+										<img src={modifiedProducts[0].imgUrl} alt="" />
 									</div>
 								</Grid>
 							</Grid>
 						</div>
 					</div>
+
+
+
 					<div>
 						<div>
 							<Grid container>
 								<Grid item md={1} />
 								<Grid item container xs={12} md={5} justify="center" alignItems="center">
 									<div>
-										<Typography className={classes.heroTextOrangeStyle} variant="h3">
-											E<span className={classes.heroTextGreyStyle}>-SHOPPER</span>
+										<Typography className={classes.heroTextOrangeStyle} variant="h4">
+										{modifiedProducts[1].title}<span className={classes.heroTextGreyStyle}></span>
 										</Typography>
 										<Box my={2}>
 											<Typography variant="body1">
-												Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-												tempor incididunt ut labore et dolore magna aliqua.
+											{modifiedProducts[1].title}
 											</Typography>
 										</Box>
-										{/* <Button variant="contained" color="primary">BUY NOW</Button> */}
-										<OrangeButton />
+										<OrangeButton selectedProductToPurchaseHandler={selectedProductToPurchaseHandler} productId={modifiedProducts[1].id} quantity={1}  />
 									</div>
 								</Grid>
 								<Grid item xs={12} md={6}>
 									<div className={classes.heroImgStyle}>
-										<img src={heroImg2} alt="" />
+										<img src={modifiedProducts[1].imgUrl} alt="" />
+									</div>
+								</Grid>
+							</Grid>
+						</div>
+					</div> 
+					<div>
+						<div>
+							<Grid container>
+								<Grid item md={1} />
+								<Grid item container xs={12} md={5} justify="center" alignItems="center">
+									<div>
+										<Typography className={classes.heroTextOrangeStyle} variant="h4">
+										{modifiedProducts[2].title}<span className={classes.heroTextGreyStyle}></span>
+										</Typography>
+										<Box my={2}>
+											<Typography variant="body1">
+											{modifiedProducts[2].title}
+											</Typography>
+										</Box>
+										<OrangeButton selectedProductToPurchaseHandler={selectedProductToPurchaseHandler} productId={modifiedProducts[2].id} quantity={1}  />
+									</div>
+								</Grid>
+								<Grid item xs={12} md={6}>
+									<div className={classes.heroImgStyle}>
+										<img src={modifiedProducts[2].imgUrl} alt="" />
 									</div>
 								</Grid>
 							</Grid>
 						</div>
 					</div>
+
+
 					<div>
 						<div>
 							<Grid container>
 								<Grid item md={1} />
 								<Grid item container xs={12} md={5} justify="center" alignItems="center">
 									<div>
-										<Typography className={classes.heroTextOrangeStyle} variant="h3">
-											E<span className={classes.heroTextGreyStyle}>-SHOPPER</span>
+										<Typography className={classes.heroTextOrangeStyle} variant="h4">
+										{modifiedProducts[3].title}<span className={classes.heroTextGreyStyle}></span>
 										</Typography>
 										<Box my={2}>
 											<Typography variant="body1">
-												Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-												tempor incididunt ut labore et dolore magna aliqua.
+											{modifiedProducts[3].title}
 											</Typography>
 										</Box>
-										{/* <Button variant="contained" color="primary">BUY NOW</Button> */}
-										<OrangeButton />
+										<OrangeButton selectedProductToPurchaseHandler={selectedProductToPurchaseHandler} productId={modifiedProducts[3].id} quantity={1}  />
 									</div>
 								</Grid>
 								<Grid item xs={12} md={6}>
 									<div className={classes.heroImgStyle}>
-										<img src={heroImg3} alt="" />
+										<img src={modifiedProducts[3].imgUrl} alt="" />
 									</div>
 								</Grid>
 							</Grid>
@@ -172,7 +225,7 @@ function MainCarousel() {
 					</div>
 				</Slider>
 			</div>
-		</Container>
+		</Container> : null
 	);
 }
 

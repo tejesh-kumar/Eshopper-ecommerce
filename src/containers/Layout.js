@@ -15,6 +15,7 @@ import authHeader from '../services/auth-header';
 
 function Layout() {
     const [currentUser, setCurrentUser] = useState(undefined);
+    const [homeSlider, setHomeSlider] = useState([]);
     const [ products, setProducts ] = useState([]);
     const [ categories, setCategories ] = useState([]);
     const [ brands, setBrands ] = useState([]);
@@ -38,6 +39,15 @@ function Layout() {
         //         sessionCart = JSON.parse(sessionStorage.getItem('cart'));
         //     }
         // setCart(sessionCart.products);    
+
+        const getHomeSlider = async () => {
+            await fetch('https://testecmr.herokuapp.com/homepageslider/')
+            .then((response) => response.json())
+            .then(data => setHomeSlider(data))
+            .catch(err => console.log(err))
+        }
+        
+        getHomeSlider();
 
 		const fetchProducts = async () => {
             // await fetch('https://cfd7348e-6a50-40f0-8fb1-bbffec42d549.mock.pstmn.io/products')
@@ -176,7 +186,7 @@ function Layout() {
         let tempCart = {};
         console.log('cart', tempCart);
 
-        tempCart = {id: id, actionType: actionType, qty: qty}
+        tempCart = {products: [{id: id, qty: qty}], actionType: actionType}
 
         console.log('tempCart', tempCart);
         // Updating Cart on backend
@@ -253,11 +263,13 @@ function Layout() {
     
     console.log(cart);
 
-    const loginUser = async (loginDetails) => {
+    const loginUser = async (loginDetails, previousPage) => {
 		await AuthService.login(loginDetails).then(
 			() => {
 			    // history.replace(history.goBack());
-                history.go(-1);
+                // history.go(-2);
+                console.log(previousPage);
+                history.replace('/checkout/cart')
                 const user = AuthService.getCurrentUser();
                 setCurrentUser(user);
                 equalizeCart();
@@ -266,39 +278,68 @@ function Layout() {
 
     const logout = () => {
         AuthService.logout();
-        history.go(0);
+        history.go(-1);
         setCurrentUser(undefined);
       };
 
-    const equalizeCart = () => {
+
+      const getCartProducts = async () => {
+        await fetch('https://testecmr.herokuapp.com/cart/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': authHeader()
+            },
+            // body: JSON.stringify(sessionCart.products)
+        })
+            .then(res => res.json())
+            // .then(data => console.log(data))
+            .then(data => {
+                const permanentCart = data.map(cp => ({id: cp.product_id_id, qty: cp.size}))
+                console.log(permanentCart);
+                const tempCart = {products: permanentCart, cartStatus: 'inSync'};
+                sessionStorage.setItem('cart', JSON.stringify(tempCart));
+                setCart(permanentCart);
+            })
+            .catch(err => console.log(err));
+    }
+
+
+
+    const equalizeCart = async () => {
         let sessionCart = {products: [], cartStatus: 'outOfSync'};
             if(sessionStorage.getItem('cart') !== null) {
                 sessionCart = JSON.parse(sessionStorage.getItem('cart'));
             }
 
-            const getCartProducts = async () => {
-                await fetch('https://testecmr.herokuapp.com/cart/', {
+            sessionCart.actionType = 'add';
+
+            // let tempCart = {sessionCart};
+            console.log('sessioncart', sessionCart);
+    
+            // tempCart = {id: id, actionType: actionType, qty: qty}
+    
+            // console.log('tempCart', tempCart);
+            // Updating Cart on backend
+            await fetch('https://testecmr.herokuapp.com/cart/addcart/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': authHeader()
+                        // 'Authorization': '858f0d32c05f88b6375b0d8dbd36b2e10f518738'
+                        // 'Authorization': TOKEN
                     },
-                    body: JSON.stringify(sessionCart.products)
+                    body: JSON.stringify(sessionCart)
                 })
                     .then(res => res.json())
                     // .then(data => console.log(data))
-                    .then(data => {
-                        const permanentCart = data.map(cp => ({id: cp.product_id_id, qty: cp.size}))
-                        console.log(permanentCart);
-                        const tempCart = {products: permanentCart, cartStatus: 'inSync'};
-                        sessionStorage.setItem('cart', JSON.stringify(tempCart));
-                        setCart(permanentCart);
-                    })
-                    .catch(err => console.log(err));
-            }
+                    .then(data => getCartProducts())
+                    .catch(err => console.log(err)); 
     
-        getCartProducts();
+        // getCartProducts();
     }
+
+
 
 
 	return (
@@ -321,7 +362,8 @@ function Layout() {
 
                             <Route path={'/checkout/:purchaseType'} render={() => (
                                 (currentUser === undefined) ?
-                                    <Redirect to='/login' /> :
+                                    <Redirect push to='/login?prevPage=cart' /> :
+                                    // <ProtectedRoute path={'/login'} currentUser={currentUser} loginUser={(loginDetails) => loginUser(loginDetails)} component={Login} /> :
 
                                     <Route path='/checkout/:purchaseType'>
                                         <Checkout cart={cart} selectedProductToPurchase={selectedProductToPurchase} />
@@ -332,6 +374,7 @@ function Layout() {
 
 							<Route path={['/', '/shop']} render={() => ( 
                         <Home 
+                        homeSlider={homeSlider}
                         products={products} 
                         brands={brands} 
                         categories={categories}

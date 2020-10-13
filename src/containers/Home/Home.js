@@ -12,7 +12,7 @@ function Home(props) {
 				path={[ '/', '/home' ]}
 				render={() => (
 					<Grid item container>
-						<MainCarousel />
+						<MainCarousel products={props.products} homeSlider={props.homeSlider} selectedProductToPurchaseHandler={props.selectedProductToPurchaseHandler} />
 					</Grid>
 				)}
 				exact

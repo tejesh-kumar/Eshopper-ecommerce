@@ -134,7 +134,7 @@ function Cart({currentUser, products, cart, updateCart}) {
             
             <Grid container justify="flex-end">
                 <Box mt={4}>
-                    <Link to={{ pathname: '/checkout/cart' }} style={{textDecoration: 'none'}}><Button variant="contained" color="primary">Proceed to checkout</Button></Link>
+                    <Link to='/checkout/cart?prevPage=cart' style={{textDecoration: 'none'}}><Button variant="contained" color="primary">Proceed to checkout</Button></Link>
                 </Box>
             </Grid>
             </Fragment> : null

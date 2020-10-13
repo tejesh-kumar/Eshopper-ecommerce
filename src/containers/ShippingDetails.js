@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useRef } from 'react';
 import { Grid, Typography, Button, Box, TextField, TextareaAutosize } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -28,6 +28,32 @@ const useStyles = makeStyles((theme) => ({
 function ShippingDetails({sendShippingDetails}) {
 	const classes = useStyles();
 
+	const [name, setName] = useState('')
+	const [address, setAddress] = useState('')
+	const [contact, setContact] = useState('') 
+	// const [shipping, setShipping] = useState({name: '', address: '', contact: ''})
+	// const nameRef = useRef(null)
+	// const addressRef = useRef('')
+	// const contactRef = useRef('')
+
+	const nameChangeHandler = (e) => {
+		// console.log(shipping);
+		// console.log(nameRef);
+		setName(e.target.value);
+	}
+
+	const addressChangeHandler = (e) => {
+		// console.log(address);
+		// setAddress(addressRef.current.value)
+		setAddress(e.target.value);
+	}
+
+	const contactChangeHandler = (e) => {
+		// console.log(contact);
+		// setContact(contactRef.current.value)
+		setContact(e.target.value);
+	}
+
 	return (
 		<Grid className={classes.outer} item container justify="center">
 			<Grid item>
@@ -36,30 +62,31 @@ function ShippingDetails({sendShippingDetails}) {
 					<form className={classes.root} noValidate autoComplete="off">
 						<TextField
 							id="outlined-basic"
+							// ref={nameRef}
 							label="Name"
 							variant="outlined"
-							// value={loginDetails.username}
-							// onChange={usernameChangeHandler}
+							value={name}
+							onChange={nameChangeHandler}
 						/>
 
 						<TextareaAutosize
-							id="outlined-basic"
+							// ref={addressRef}
 							label="Address"
                             variant="outlined"
                             rowsMin={4}
                             placeholder="Enter Shipping Address"
-							// value={loginDetails.username}
-							// onChange={usernameChangeHandler}
+							value={address}
+							onChange={addressChangeHandler}
 						/>
 
 						<TextField
-							id="outlined-basic"
+							// ref={contactRef}
 							label="Contact Number"
 							variant="outlined"
-							// value={loginDetails.password}
-							// onChange={passwordChangeHandler}
+							value={contact}
+							onChange={contactChangeHandler}
 						/>
-						<Button variant="contained" color="primary" onClick={() => sendShippingDetails()}>
+						<Button variant="contained" color="primary" onClick={() => sendShippingDetails(name, address, contact)}>
 							<Box py={0.7}>
 								<Typography variant="body1" color="secondary">
 									Order Now
