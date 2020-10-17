@@ -41,7 +41,7 @@ function ProductCard({productInfo, updateCart }) {
 			</Grid>
 			<Grid item>
 				<Typography variant="h2" className={classes.priceStyle}>
-					Rs. <span>{productInfo.price}</span>
+					Rs.<span>{productInfo.price}</span>
 				</Typography>
 			</Grid>
 			<Grid item>

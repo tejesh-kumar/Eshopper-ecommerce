@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import {Link} from 'react-router-dom'
-import { Container, Grid } from '@material-ui/core'
+import { Container } from '@material-ui/core'
 import Slider from 'react-slick'
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick-theme.css"
 import Heading from './Heading'
 import ProductCard from './ProductCard'
 
-import Image from '../images/home/recommend3.jpg'
+// import Image from '../images/home/recommend3.jpg'
 
 
 function RecommendedItems({products, updateCart}) {

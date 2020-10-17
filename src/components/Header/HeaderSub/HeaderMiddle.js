@@ -4,13 +4,11 @@ import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import PersonIcon from '@material-ui/icons/Person';
-// import StarIcon from '@material-ui/icons/Star';
-// import MyLocationIcon from '@material-ui/icons/MyLocation';
 import LockIcon from '@material-ui/icons/Lock';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 // import AuthService from '../services/auth.service';
-import Logo from '../images/home/logo.png';
+import Logo from '../../../images/home/logo.png';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -51,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function HeaderMiddle({currentUser, logout}) {
-	console.log('middle', currentUser)
+function HeaderMiddle({ currentUser, logout }) {
+	console.log('middle', currentUser);
 	const classes = useStyles();
 	// const currentUser = AuthService.getCurrentUser();
 
@@ -69,14 +67,6 @@ function HeaderMiddle({currentUser, logout}) {
 					<PersonIcon className={classes.iconStyle} />
 					<span>Account</span>
 				</div>
-				{/* <div className={classes.navItem}>
-                        <StarIcon className={classes.iconStyle} />
-                       <span>Wishlist</span> 
-                    </div>
-                    <div className={classes.navItem}>
-                        <MyLocationIcon className={classes.iconStyle} />
-                       <span>Checkout</span>
-                    </div> */}
 
 				<NavLink
 					to="/cart"
@@ -90,7 +80,7 @@ function HeaderMiddle({currentUser, logout}) {
 				</NavLink>
 
 				{currentUser ? (
-					<div className={classes.navItem} onClick={() => logout()} style={{cursor: 'pointer'}}>
+					<div className={classes.navItem} onClick={() => logout()} style={{ cursor: 'pointer' }}>
 						<LockIcon className={classes.iconStyle} />
 						<span>Logout</span>
 					</div>

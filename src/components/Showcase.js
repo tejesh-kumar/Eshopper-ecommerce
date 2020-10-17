@@ -1,19 +1,31 @@
 import React, { Fragment } from 'react';
-import { Route, useParams } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { Container, Grid } from '@material-ui/core';
 // import { Route, Switch } from 'react-router-dom';
 
-import LeftSidebarSection from '../../utils/LeftSidebarSection';
-import FeaturedItems from '../../utils/ProductList';
+import LeftSidebarSection from '../utils/LeftSidebarSection';
+import FeaturedItems from '../utils/ProductList';
 import TabItems from './TabItems';
-import RecommendedItems from '../../utils/RecommendedItems';
+// import RecommendedItems from '../utils/RecommendedItems';
 
-import banner from '../../images/home/shipping.jpg';
-import ProductDetail from '../ProductDetail';
+import banner from '../images/home/shipping.jpg';
+import ProductDetail from './ProductDetail';
 // import ProductCard from '../../utils/ProductCard';
 
-function Showcase({products, categories, brands, tabCategory, quantity, searchString, incrementQtyHandler, decrementQtyHandler, updateCart, selectedProductToPurchaseHandler, tabCategoryHandler}) {
-// function Showcase({products}) {
+function Showcase({
+	products,
+	categories,
+	brands,
+	tabCategory,
+	quantity,
+	searchString,
+	incrementQtyHandler,
+	decrementQtyHandler,
+	updateCart,
+	selectedProductToPurchaseHandler,
+	tabCategoryHandler
+}) {
+	// function Showcase({products}) {
 
 	let dynamicShowcase;
 
@@ -27,9 +39,15 @@ function Showcase({products, categories, brands, tabCategory, quantity, searchSt
 							<FeaturedItems products={products} updateCart={updateCart} />
 						</Grid>
 						<Grid item container>
-							<TabItems categories={categories} products={products} tabCategory={tabCategory} updateCart={updateCart} tabCategoryHandler={tabCategoryHandler} />
+							<TabItems
+								categories={categories}
+								products={products}
+								tabCategory={tabCategory}
+								updateCart={updateCart}
+								tabCategoryHandler={tabCategoryHandler}
+							/>
 						</Grid>
-				{/* <Grid item container>
+						{/* <Grid item container>
 					<RecommendedItems products={products} updateCart={updateCart} />
 				</Grid> */}
 					</Grid>
@@ -49,9 +67,8 @@ function Showcase({products, categories, brands, tabCategory, quantity, searchSt
 				)}
 			/>
 
-
 			<Route
-				path={['/shop/category/:categoryId', '/shop/brand/:brandId', '/shop/search/:searchStr']}
+				path={[ '/shop/category/:categoryId', '/shop/brand/:brandId', '/shop/search/:searchStr' ]}
 				render={() => (
 					<Grid item container xs={12} md={9} alignItems="flex-start">
 						<Grid item container>
@@ -61,14 +78,19 @@ function Showcase({products, categories, brands, tabCategory, quantity, searchSt
 				)}
 			/>
 
-
-
 			<Route
 				path={`/product/*/:productId`}
 				render={() => (
 					<Grid item container xs={12} md={9}>
 						<Grid item container alignItems="flex-start">
-							<ProductDetail products={products} quantity={quantity} incrementQtyHandler={incrementQtyHandler} decrementQtyHandler={decrementQtyHandler} updateCart={updateCart} selectedProductToPurchaseHandler={selectedProductToPurchaseHandler} />
+							<ProductDetail
+								products={products}
+								quantity={quantity}
+								incrementQtyHandler={incrementQtyHandler}
+								decrementQtyHandler={decrementQtyHandler}
+								updateCart={updateCart}
+								selectedProductToPurchaseHandler={selectedProductToPurchaseHandler}
+							/>
 						</Grid>
 						{/* <Grid item container>
 							<RecommendedItems />
@@ -112,7 +134,7 @@ function Showcase({products, categories, brands, tabCategory, quantity, searchSt
 						<LeftSidebarSection title="category" linkItems={categories} />
 						<LeftSidebarSection title="brand" linkItems={brands} />
 						<Grid item>
-							<img src={banner} alt="banner" style={{maxWidth: '100%'}} />
+							<img src={banner} alt="banner" style={{ maxWidth: '100%' }} />
 						</Grid>
 					</Grid>
 				</Grid>

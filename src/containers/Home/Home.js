@@ -2,8 +2,8 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
 
-import MainCarousel from '../../components/Header/MainCarousel';
-import Showcase from '../../components/Header/Showcase';
+import MainCarousel from '../../components/MainCarousel';
+import Showcase from '../../components/Showcase';
 
 function Home(props) {
 	return (
@@ -12,7 +12,11 @@ function Home(props) {
 				path={[ '/', '/home' ]}
 				render={() => (
 					<Grid item container>
-						<MainCarousel products={props.products} homeSlider={props.homeSlider} selectedProductToPurchaseHandler={props.selectedProductToPurchaseHandler} />
+						<MainCarousel
+							products={props.products}
+							homeSlider={props.homeSlider}
+							selectedProductToPurchaseHandler={props.selectedProductToPurchaseHandler}
+						/>
 					</Grid>
 				)}
 				exact

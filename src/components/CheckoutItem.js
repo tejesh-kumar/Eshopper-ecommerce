@@ -1,7 +1,5 @@
 import React from 'react';
-import { Grid, Typography, IconButton, Box } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import { Grid, Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
 // import image from '../images/cart/one.png';
@@ -50,11 +48,11 @@ function CheckoutItem({ cartProduct }) {
 				spacing={3}
 				item
 				container
-                // alignItems="center"
+				// alignItems="center"
 				direction="column"
 				xs={8}
 			>
-				<Grid item container className={classes.title} style={{paddingBottom: '0'}}>
+				<Grid item container className={classes.title} style={{ paddingBottom: '0' }}>
 					{/* <Typography variant="h6" color="initial">{name}</Typography> */}
 					<Typography variant="h6" color="initial">
 						{/* Polo Black Shirt */}
@@ -73,7 +71,7 @@ function CheckoutItem({ cartProduct }) {
 							<div>Qty:</div>
 							{/* <Box mx={2}><Typography variant="h5">{size}</Typography></Box> */}
 							<Box ml={2}>
-							<Typography variant="h5">{size}</Typography>
+								<Typography variant="h5">{size}</Typography>
 							</Box>
 						</div>
 					</Grid>

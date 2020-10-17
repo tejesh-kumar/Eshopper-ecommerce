@@ -48,13 +48,21 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function ProductDetail({ products, cart, quantity, incrementQtyHandler, decrementQtyHandler, updateCart, selectedProductToPurchaseHandler }) {
+function ProductDetail({
+	products,
+	cart,
+	quantity,
+	incrementQtyHandler,
+	decrementQtyHandler,
+	updateCart,
+	selectedProductToPurchaseHandler
+}) {
 	const classes = useStyles();
 
 	const { productId } = useParams();
 	console.log('productId', productId);
 
-	if(products.length === 0) {
+	if (products.length === 0) {
 		return null;
 	}
 
@@ -69,7 +77,6 @@ function ProductDetail({ products, cart, quantity, incrementQtyHandler, decremen
 	// 	}
 	// })
 	console.log(quantity);
-
 
 	return (
 		<Grid className={classes.root} container spacing={5} justify="center" alignItems="center">
@@ -92,18 +99,28 @@ function ProductDetail({ products, cart, quantity, incrementQtyHandler, decremen
 
 				<Grid item container>
 					<div className={classes.quantity}>
-                <IconButton aria-label="" onClick={incrementQtyHandler}><AddIcon /></IconButton>
-					<Box mx={5}><Typography variant="h5">{quantity}</Typography></Box>
-                <IconButton aria-label="" onClick={decrementQtyHandler}><RemoveIcon /></IconButton>
-              </div>
-			  </Grid>
+						<IconButton aria-label="" onClick={incrementQtyHandler}>
+							<AddIcon />
+						</IconButton>
+						<Box mx={5}>
+							<Typography variant="h5">{quantity}</Typography>
+						</Box>
+						<IconButton aria-label="" onClick={decrementQtyHandler}>
+							<RemoveIcon />
+						</IconButton>
+					</div>
+				</Grid>
 
-			  <Grid item container spacing={3}>
+				<Grid item container spacing={3}>
 					<Grid item>
 						<WhiteButton updateCart={updateCart} productId={id} />
 					</Grid>
 					<Grid item>
-						<OrangeButton selectedProductToPurchaseHandler={selectedProductToPurchaseHandler} productId={id} quantity={quantity} />
+						<OrangeButton
+							selectedProductToPurchaseHandler={selectedProductToPurchaseHandler}
+							productId={id}
+							quantity={quantity}
+						/>
 					</Grid>
 				</Grid>
 

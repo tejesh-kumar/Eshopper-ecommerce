@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Link, NavLink} from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 
 import { Container, InputBase } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,37 +22,37 @@ const useStyles = makeStyles((theme) => ({
 			justifyContent: 'space-between',
 			flexDirection: 'row'
 		}
-    },
-    menubar: {
-        display: 'flex',
-		alignItems: 'center',
-		
+	},
+	menubar: {
+		display: 'flex',
+		alignItems: 'center'
+
 		// '& a': {
 		// 	color: 'orange',
 		// 	textDecoration: 'none'
 		// }
-    },
-    menuItem: {
+	},
+	menuItem: {
 		padding: '0 15px',
 		textDecoration: 'none',
 		border: 0,
 		color: 'orange',
 
-		'a': {
+		a: {
 			textDecoration: 'none'
 		}
 	},
 	active: {
 		color: 'black'
 	},
-    search: {
-        fontSize: '12px',
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.secondary.main,
-        padding: '8px 16px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
+	search: {
+		fontSize: '12px',
+		color: theme.palette.text.primary,
+		backgroundColor: theme.palette.secondary.main,
+		padding: '8px 16px',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	searchLink: {
 		color: 'inherit',
@@ -60,24 +60,31 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function HeaderBottom({searchHandler}) {
+function HeaderBottom({ searchHandler }) {
 	const classes = useStyles();
-	const [searchStr, setSearchStr] = useState('');
+	const [ searchStr, setSearchStr ] = useState('');
 
 	const searchChangeHandler = (search) => {
 		setSearchStr(search.toLowerCase());
-	}
+	};
 
 	return (
 		<Container maxWidth="lg" className={classes.root}>
-			<div className={classes.menubar} >
-                <NavLink to='/' activeClassName={classes.active} className={classes.menuItem} exact>Home</NavLink>
-                <NavLink to='/shop' activeClassName={classes.active} className={classes.menuItem}>Shop</NavLink>
-                <NavLink to='/product' activeClassName={classes.active} className={classes.menuItem}>About</NavLink>
-                <NavLink to='/contact' activeClassName={classes.active} className={classes.menuItem}>Contact</NavLink>
-            </div>
+			<div className={classes.menubar}>
+				<NavLink to="/" activeClassName={classes.active} className={classes.menuItem} exact>
+					Home
+				</NavLink>
+				<NavLink to="/shop" activeClassName={classes.active} className={classes.menuItem}>
+					Shop
+				</NavLink>
+				<NavLink to="/product" activeClassName={classes.active} className={classes.menuItem}>
+					About
+				</NavLink>
+				<NavLink to="/contact" activeClassName={classes.active} className={classes.menuItem}>
+					Contact
+				</NavLink>
+			</div>
 			<div className={classes.search}>
-				
 				<InputBase
 					placeholder="Search…"
 					classes={{
@@ -89,7 +96,7 @@ function HeaderBottom({searchHandler}) {
 					onChange={(e) => searchChangeHandler(e.target.value)}
 				/>
 
-				<Link to={`/shop/search/${searchStr}`} className={classes.searchLink} >
+				<Link to={`/shop/search/${searchStr}`} className={classes.searchLink}>
 					<div className={classes.searchIcon} onClick={() => searchHandler(searchStr)}>
 						<SearchIcon />
 					</div>

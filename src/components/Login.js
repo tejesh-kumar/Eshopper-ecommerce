@@ -21,9 +21,9 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function Login({loginUser}) {
+function Login({ loginUser }) {
 	const classes = useStyles();
-	const {prevPage} = useParams();
+	const { prevPage } = useParams();
 	console.log(prevPage);
 
 	const [ loginDetails, setLoginDetails ] = useState({ username: '', password: '' });
@@ -70,13 +70,12 @@ function Login({loginUser}) {
 	};
 
 	const regUser = async () => {
-		await AuthService.register(registerDetails).then(
-			(response) => {
+		await AuthService.register(registerDetails).then((response) => {
 			//   setMessage(response.data.message);
 			//   setSuccessful(true);
-				console.log('Registration successful');
-			})
-		
+			console.log('Registration successful');
+		});
+
 		// fetch('https://testecmr.herokuapp.com/users/register/', {
 		// 	method: 'POST',
 		// 	headers: {
@@ -88,17 +87,14 @@ function Login({loginUser}) {
 		// 	.then((data) => console.log(data));
 	};
 
-	
 	// const loginUser = async () => {
 	// 	await AuthService.login(loginDetails).then(
 	// 		() => {
 	// 		  history.replace(history.goBack());
 	// 		//   history.go(0);
-	// 		  window.location.reload();			
-	// 		})  
+	// 		  window.location.reload();
+	// 		})
 	// };
-
-
 
 	return (
 		<Grid item container justify="center">
@@ -124,7 +120,11 @@ function Login({loginUser}) {
 									value={loginDetails.password}
 									onChange={passwordChangeHandler}
 								/>
-								<Button variant="contained" color="primary" onClick={() => loginUser(loginDetails, prevPage)}>
+								<Button
+									variant="contained"
+									color="primary"
+									onClick={() => loginUser(loginDetails, prevPage)}
+								>
 									<Box py={0.7}>
 										<Typography variant="body1" color="secondary">
 											LOGIN
@@ -181,7 +181,7 @@ function Login({loginUser}) {
 								</Button>
 							</form>
 
-							<Link to="/login" style={{color: 'inherit', textDecoration: 'none'}}>
+							<Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
 								<Box py={0.7}>
 									<Typography variant="body1" color="primary">
 										Back to login

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Container, Button, Typography, Grid, Box } from '@material-ui/core';
+import { Typography, Grid, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import OrangeButton from '../../utils/OrangeButton';
-import heroImg1 from '../../images/home/girl1.jpg';
+import OrangeButton from '../utils/OrangeButton';
+import heroImg1 from '../images/home/girl1.jpg';
 
 const useStyles = makeStyles((theme) => ({
 	btnStyle: {

@@ -1,13 +1,9 @@
-import React, {useState, useEffect} from 'react'
-import {useParams} from 'react-router-dom'
-import {Grid, Container, Typography} from '@material-ui/core'
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { Grid, Container, Typography } from '@material-ui/core';
 
 function Orders() {
-    return (
-        <div>
-            
-        </div>
-    )
+	return <div></div>;
 }
 
-export default Orders
+export default Orders;

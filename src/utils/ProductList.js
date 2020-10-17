@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react'
-import {Switch, Route, useRouteMatch, useParams, useLocation, Link} from 'react-router-dom'
+import {useParams, useLocation, Link} from 'react-router-dom'
 import { Grid, Box } from '@material-ui/core'
 
 import Heading from './Heading'
